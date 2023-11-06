@@ -2,7 +2,7 @@ type CoverImage = {
   url: string;
 };
 
-type Images = {
+export type Image = {
   _key: string;
   url: string;
 };
@@ -22,9 +22,9 @@ export type Room = {
   _id: string;
   coverImage: CoverImage;
   description: string;
-  dimensions: string;
+  dimension: string;
   discount: number;
-  images: Images[];
+  images: Image[];
   isBooked: boolean;
   isFeatured: boolean;
   name: string;
@@ -32,6 +32,6 @@ export type Room = {
   offeredAmenities: Amenity[];
   price: number;
   slug: Slug;
-  SpecialNote: string;
+  specialNote: string;
   type: string;
 };

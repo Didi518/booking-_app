@@ -4,7 +4,7 @@ import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { Room } from "@/app/models/room";
+import { Room } from "@/models/room";
 
 type Props = {
   featuredRoom: Room;
@@ -48,20 +48,20 @@ const FeaturedRoom: FC<Props> = (props) => {
             <div className="flex gap-3 flex-col items-center justify-center mr-4">
               <p className="text-xs lg:text-xl text-center">Dés</p>
               <p className="md:font-bold flex font-medium text-lg xl:text-5xl">
-                {featuredRoom.price} €
+                {featuredRoom.price}€
               </p>
             </div>
             <div className="flex gap-3 flex-col items-center justify-center mr-4">
               <p className="text-xs lg:text-xl text-center">Promo</p>
               <p className="md:font-bold flex font-medium text-lg xl:text-5xl">
-                {featuredRoom.discount} €
+                {featuredRoom.discount}€
               </p>
             </div>
           </div>
 
           <Link
             href={`/chambres/${featuredRoom.slug.current}`}
-            className="border h-fit text-center border-t-tertiary-dark text-tertiary-dark px-3 py-2 lg:py-5 lg:px-7 rounded-2xl font-bold lg:text-xl"
+            className="border h-fit text-center border-tertiary-dark text-tertiary-dark px-3 py-2 lg:py-5 lg:px-7 rounded-2xl font-bold lg:text-xl"
           >
             Détails
           </Link>
