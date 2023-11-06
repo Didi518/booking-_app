@@ -1,8 +1,12 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
+import { signUp } from "next-auth-sanity/client";
+import { signIn, useSession } from "next-auth/react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const defaultFormData = {
   email: "",
@@ -21,13 +25,34 @@ const Auth = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session) router.push("/");
+  }, [router, session]);
+
+  const loginHandler = async () => {
+    try {
+      await signIn();
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+      toast.error("Une erreur est survenue");
+    }
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      console.log(formData);
+      const user = await signUp(formData);
+      if (user) {
+        toast.success("Félicitations! Merci de vous connecter");
+      }
     } catch (error) {
       console.log(error);
+      toast.error("Une erreur est survenue");
     } finally {
       setFormData(defaultFormData);
     }
@@ -42,9 +67,15 @@ const Auth = () => {
           </h1>
           <p>OU</p>
           <span className="inline-flex items-center">
-            <AiFillGithub className="mr-3 text-4xl cursor-pointer text-black dark:text-white" />
+            <AiFillGithub
+              onClick={loginHandler}
+              className="mr-3 text-4xl cursor-pointer text-black dark:text-white"
+            />
             |
-            <FcGoogle className="ml-3 text-4xl cursor-pointer" />
+            <FcGoogle
+              onClick={loginHandler}
+              className="ml-3 text-4xl cursor-pointer"
+            />
           </span>
         </div>
 
@@ -85,7 +116,9 @@ const Auth = () => {
             Inscription
           </button>
         </form>
-        <button className="text-blue-700 underline">Connexion</button>
+        <button onClick={loginHandler} className="text-blue-700 underline">
+          Connexion
+        </button>
       </div>
     </section>
   );
